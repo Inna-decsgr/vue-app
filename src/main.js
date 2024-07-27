@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-//import store from './store/store.js'
+import store from './store/store.js'
 import axios from 'axios'
 
 // Axios 기본 설정
@@ -15,5 +15,5 @@ app.config.globalProperties.$http = axios;
 
 // Vue 애플리케이션과 함께 router와 store 사용
 app.use(router)
-//app.use(store)
+app.use(store)
 app.mount('#app');
