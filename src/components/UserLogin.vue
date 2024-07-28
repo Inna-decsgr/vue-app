@@ -10,7 +10,6 @@
 <script>
 
 import { auth, googleProvider, signInWithPopup } from '../api/firebase.js';
-import axios from 'axios';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -31,7 +30,7 @@ export default {
         const user = result.user;
 
         // 사용자 정보를 백엔드 서버로 전송
-        const response = await axios.post('http://localhost:5000/api/auth/login', {
+        const response = await this.$http.post('http://localhost:5000/api/auth/login', {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
@@ -43,10 +42,10 @@ export default {
         localStorage.setItem('token', token); 
 
         // 이후 API 요청에 토큰 포함
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        this.$http.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         // 사용자 정보를 저장하거나 업데이트
-        await axios.post('http://localhost:5000/api/users', {
+        await this.$http.post('http://localhost:5000/api/users', {
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
@@ -65,13 +64,13 @@ export default {
     },
     async logout() {
       try {
-        await axios.post('http://localhost:5000/api/auth/logout');
+        await this.$http.post('http://localhost:5000/api/auth/logout');
 
         // 클라이언트 저장소에서 토큰 삭제
         localStorage.removeItem('token');
 
          // Axios 기본 헤더에서 토큰 제거
-        delete axios.defaults.headers.common['Authorization']; 
+        delete this.$http.defaults.headers.common['Authorization']; 
 
         // 로그인 상태 업데이트하고 리디렉션
         this.isLoggedIn = false;
@@ -85,7 +84,7 @@ export default {
       // 사용자 인증 사태 확인하고 로그인 상태 유지하는 함수
       try {
         // 서버에 인증 상태를 확인하는 요청 보내기
-        const response = await axios.get('http://localhost:5000/api/protected', {
+        const response = await this.$http.get('http://localhost:5000/api/protected', {
           withCredentials: true  // 브라우저가 쿠키를 포함시켜 요청
         });
 
