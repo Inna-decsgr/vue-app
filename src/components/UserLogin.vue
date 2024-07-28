@@ -74,7 +74,7 @@ export default {
 
         // 로그인 상태 업데이트하고 리디렉션
         this.isLoggedIn = false;
-        this.$router.push('/login');
+        this.$router.push('/');
         console.log("로그아웃", this.token);
       } catch (error) {
         console.error('Error logging out:', error);
