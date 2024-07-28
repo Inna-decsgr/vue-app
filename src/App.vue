@@ -2,13 +2,25 @@
   <div>
     <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/login">로그인</router-link>
+      <router-link to="/latest">최신 영화</router-link> |
+      <router-link to="/genre">장르별 영화</router-link>
+      <UserLogin />
     </nav>
     <div>
       <router-view/>
     </div>
   </div>
 </template>
+
+<script>
+import UserLogin from './components/UserLogin.vue'
+
+export default {
+  components: {
+    UserLogin
+  }
+}
+</script>
 
 <style>
 #app {
