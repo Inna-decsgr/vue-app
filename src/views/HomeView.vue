@@ -1,23 +1,17 @@
 <template>
   <div>
     <h1>인기 영화</h1>
-    <ul>
-      <li v-for="movie in popularMovies" :key="movie._id">
-        <h2>{{ movie.title }}</h2>
-        <img :src="movie.poster_url" :alt="movie.title">
-        <p>{{ movie.description }}</p>
-        <p>Director: {{ movie.director }}</p>
-        <p>Cast: {{ movie.cast.join(', ') }}</p>
-        <p>Release Date: {{ movie.release_date }}</p>
-        <p>Rating: {{ movie.rating }}</p>
-      </li>
-    </ul>
+    <MoviesList :movies="popularMovies"/>
   </div>
 </template>
 
 <script>
+import MoviesList from '../components/MoviesList.vue'
 
 export default {
+  components: {
+    MoviesList
+  },
   data() {
     return {
       popularMovies: [],
