@@ -1,6 +1,9 @@
 <template>
   <div>
-    <input type="text" v-model="query" @input="onChange" placeholder="검색어를 입력하세요" />
+    <input type="text" v-model="query" @change="onChange" placeholder="검색어를 입력하세요" />
+    <button @click="onChange">
+      검색
+    </button>
   </div>
 </template>
 
