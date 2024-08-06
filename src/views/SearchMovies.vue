@@ -4,16 +4,7 @@
     <div v-if="hasSearched">
       <div v-if="results && results.length > 0">
         <h2>"{{ query }}"(으)로 검색한 결과</h2>
-        <ul>
-          <li v-for="movie in results" :key="movie._id">
-            <div>
-              <img :src="movie.poster_url" alt="Poster" />
-              <h3>{{ movie.title }}</h3>
-              <p>Director: {{ movie.director }}</p>
-              <p>Release Date: {{ movie.release_date }}</p>
-            </div>
-          </li>
-        </ul>
+        <MoviesList :movies="results" />
       </div>
       <div v-else>
         <p>검색 결과가 없습니다.</p>
@@ -28,10 +19,12 @@
 <script>
 import axios from 'axios';
 import SearchBar from '@/components/SearchBar.vue';
+import MoviesList from '../components/MoviesList.vue';
 
 export default {
   components: {
-    SearchBar
+    SearchBar,
+    MoviesList
   },
   data() {
     return {
