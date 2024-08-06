@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <div class="row">
       <div v-for="movie in movies" :key="movie._id" class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-5">
-        <div class="card h-100">
+        <div class="card h-100" @click="moveDetail(movie._id)">
           <img :src="movie.poster_url" :alt="movie.title" class="card-img-top" />
           <div class="card-body">
             <h5 class="card-title fw-bold">{{ movie.title }}</h5>
@@ -27,6 +27,11 @@ export default {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    moveDetail(movieId) {
+      this.$router.push(`/movies/${movieId}`)
+    }
   }
 }
 </script>
@@ -34,6 +39,7 @@ export default {
 <style>
 .container {
   max-width: 100%;
+  cursor:pointer
 }
 
 .card-img-top {
