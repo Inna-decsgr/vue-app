@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 .genrenav{
   display: flex;
   align-items: center;
@@ -47,7 +51,7 @@ export default {
 }
 
 /* 모바일 화면에서의 설정 */
-@media (min-width: 576px){
+@media (max-width: 577px) {
   .genrenav {
     display: flex;
     flex-wrap: nowrap; /* 줄 바꿈 방지 */
@@ -61,31 +65,50 @@ export default {
     font-size: 0.8rem; /* 모바일에서의 글자 크기 조정 */
   }
 }
-
 
 /* 중간 화면에서의 설정 */
-@media (min-width: 578px) and (max-width: 991px) {
+@media (min-width: 578px) and (max-width: 767px) {
   .genrenav {
     display: flex;
     flex-wrap: nowrap; /* 줄 바꿈 방지 */
     overflow-x: auto; /* 수평 스크롤 추가 */
     margin: 20px 0;
-    gap: 10px; /* 모바일에서의 간격 조정 */
+    gap: 10px; /* 중간 화면에서의 간격 조정 */
   }
   .genrerouter {
     white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
-    padding: 5px 10px; /* 모바일에서의 버튼 패딩 조정 */
-    font-size: 0.8rem; /* 모바일에서의 글자 크기 조정 */
+    padding: 5px 10px; /* 중간 화면에서의 버튼 패딩 조정 */
+    font-size: 0.8rem; /* 중간 화면에서의 글자 크기 조정 */
   }
 }
 
-
 /* 큰 화면에서의 설정 */
+@media (min-width: 768px) and (max-width: 991px) {
+  .genrenav {
+    display: flex;
+    flex-wrap: nowrap; /* 줄 바꿈 방지 */
+    overflow-x: auto; /* 수평 스크롤 추가 */
+    margin: 20px 0;
+    gap: 20px; /* 큰 화면에서의 간격 조정 */
+  }
+  .genrerouter {
+    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+    padding: 10px 20px; /* 큰 화면에서의 버튼 패딩 조정 */
+    font-size: 0.9rem; /* 큰 화면에서의 글자 크기 조정 */
+  }
+}
+
+/* 더 큰 화면에서의 설정 */
 @media (min-width: 992px) {
   .genrenav {
+    display: flex;
+    flex-wrap: nowrap; /* 줄 바꿈 방지 */
+    overflow-x: auto; /* 수평 스크롤 추가 */
+    margin: 20px 0;
     gap: 30px; /* 큰 화면에서의 간격 조정 */
   }
   .genrerouter {
+    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
     padding: 10px 30px; /* 큰 화면에서의 버튼 패딩 조정 */
     font-size: 1rem; /* 큰 화면에서의 글자 크기 조정 */
   }
