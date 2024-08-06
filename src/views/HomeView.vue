@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>인기 영화</h1>
+    <h3 class="mb-5 fw-bold">실시간 인기 영화</h3>
     <MoviesList :movies="popularMovies"/>
   </div>
 </template>

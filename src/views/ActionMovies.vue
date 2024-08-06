@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ genreName }} 영화</h1>
+    <h3>{{ genreName }} 영화</h3>
     <MoviesList :movies="movies" />
   </div>
 </template>
