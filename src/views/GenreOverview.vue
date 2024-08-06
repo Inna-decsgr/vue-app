@@ -34,7 +34,7 @@ export default {
 .genrenav{
   display: flex;
   align-items: center;
-  margin: 20px 0 20px 0;
+  margin: 20px 0;
   gap: 30px;
 }
 
@@ -44,6 +44,11 @@ export default {
   padding: 10px 30px;
   border-radius: 30px;
   white-space: nowrap;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* 애니메이션 추가 */
+}
+
+.genrerouter:hover {
+  background-color: rgb(70, 68, 68); /* 배경색 변경 */
 }
 
 .active-genre-link {
