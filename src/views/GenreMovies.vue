@@ -2,14 +2,22 @@
   <div>
     <h3>{{ genreName }}</h3>
     <MoviesList :movies="movies" />
+
+    <MoviePagination 
+      :total-pages="totalPages" 
+      :current-page="currentPage" 
+      @page-changed="handlePageChange" 
+    />
   </div>
 </template>
 
 <script>
 import MoviesList from '../components/MoviesList.vue';
+import MoviePagination from '../components/MoviePagination.vue';
 import axios from 'axios';
 import { computed, ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { removeDuplicates } from '../utils/removeDuplicates.js'
 
 const genreMap = {
   28: '액션',
@@ -30,13 +38,18 @@ const genreMap = {
 export default {
   name: 'GenreMovies',
   components: {
-    MoviesList
+    MoviesList,
+    MoviePagination
   },
   setup() {
     const route = useRoute();
     const genreId = ref(null);
-    const movies = ref([]);
+    const movies = ref([]);  // 영화 목록을 저장
     const genreName = computed(() => route.params.genreName);
+    const currentPage = ref(1);
+    const totalPages = ref(1);
+    const totalMovies = ref(0);
+    const limit = ref(18);
 
     const updateGenreId = () => {
       const id = Object.keys(genreMap).find(key => genreMap[key].toLowerCase() === genreName.value.toLowerCase());
@@ -44,17 +57,36 @@ export default {
       console.log('Updated genreId:', genreId.value); // Log for debugging
     };
 
-    const fetchMovies = async () => {
+    const fetchMovies = async (page = 1) => {
       if (genreId.value) {
-        console.log('Fetching movies for genreId:', genreId.value); // Log for debugging
         try {
           const response = await axios.get(`/movies/genre/${genreId.value}`);
-          movies.value = response.data;
-          console.log('Movies fetched:', response.data); // Log for debugging
+          const allMovies = removeDuplicates(response.data, 'title');
+          console.log('Movies after removing duplicates:', allMovies);
+
+          // 페이지네이션 로직
+          const startIndex = (page - 1) * limit.value;
+          const endIndex = startIndex + limit.value;
+          movies.value = allMovies.slice(startIndex, endIndex);
+
+          totalMovies.value = allMovies.length;
+          totalPages.value = Math.ceil(allMovies.length / limit.value);
+          currentPage.value = page;
         } catch (error) {
           console.error('Error fetching movies:', error);
         }
+      } else {
+        movies.value = [];
+        totalMovies.value = 0;
+        totalPages.value = 1;
+        currentPage.value = 1;
       }
+    };
+
+    const handlePageChange = (page) => {
+      if (page < 1 || page > totalPages.value) return;
+      currentPage.value = page;
+      fetchMovies(page);
     };
 
     watch(genreName, (newValue) => {
@@ -70,7 +102,10 @@ export default {
 
     return {
       genreName,
-      movies
+      movies,
+      currentPage,
+      totalPages,
+      handlePageChange
     };
   },
 };
