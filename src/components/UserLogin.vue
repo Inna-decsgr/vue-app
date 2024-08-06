@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <button v-if="!isLoggedIn" @click="handleLoginWithGoogle" :disabled="loading">
-      {{ loading ? 'Logging in...' : 'Login with Google' }}
-    </button>
-    <button v-if="isLoggedIn" @click="handleLogout">Logout</button>
+  <div class="d-flex content-user">
     <div v-if="isLoggedIn && user">
-      <img :src="user.photoURL" alt="User Photo">
-      <span>{{ user.displayName }}님</span>
+      <img :src="user.photoURL" alt="User Photo" class="rounded-circle w-25 ms-2">
+      <span class="ms-1">{{ user.displayName }}님</span>
+    </div>
+    <div>
+      <button v-if="!isLoggedIn" @click="handleLoginWithGoogle" :disabled="loading" class="btn btn-primary">
+      {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+      <button v-if="isLoggedIn" @click="handleLogout" class="btn btn-primary">Logout</button>
     </div>
   </div>
 </template>
@@ -32,13 +34,10 @@ export default {
           displayName: result.user.displayName,
           photoURL: result.user.photoURL
         };
-        console.log(user);
         // Vuex action을 직접 호출해서 로그인 처리 및 사용자 정보 저장
         await this.loginWithGoogle(user);
         this.$router.push('/');  // 로그인 후 홈으로 리디렉션
-        console.log('로그인 성공');
       } catch (error) {
-        console.error('로그인 오류', error);
         alert('로그인에 실패했습니다. 다시 시도해보세요.');
       } finally {
         this.$store.commit('setLoading', false);  // Vuex에서 loading 상태를 false로 설정
@@ -95,3 +94,13 @@ export default {
   },
 };
 </script>
+
+
+<style>
+/* 미디어 쿼리를 사용하여 화면 크기에 따라 패딩 조정 */
+@media (max-width: 767px) {
+  .content-user {
+    margin-top: 15px;
+  }
+}
+</style>

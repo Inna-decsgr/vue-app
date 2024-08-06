@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <input type="text" v-model="query" @change="onChange" placeholder="검색어를 입력하세요" />
-    <button @click="onChange">
+  <div class="mb-5 d-flex align-items-center">
+    <input class="form-control form-control-md" type="text" v-model="query" @change="onChange" placeholder="검색어를 입력하세요" style="width:600px" />
+    <button class="btn btn-primary searchbar" @click="onChange">
       검색
     </button>
   </div>
@@ -27,3 +27,23 @@ export default {
 };
 </script>
 
+<style>
+.form-control-md {
+  height: 2.5rem;
+  border-radius: 5px 0px 0px 5px;
+}
+.btn-primary.searchbar {
+  height: 2.5rem; 
+  padding: 0 1rem;
+  font-size: 1rem;
+  border-radius: 0 5px 5px 0; 
+  width: 70px;
+}
+
+@media (max-width: 767px) {
+  .btn-primary.searchbar {
+    width: 90px;
+  }
+}
+
+</style>
