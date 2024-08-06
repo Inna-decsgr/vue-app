@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue';
 import LatestMovies from '../views/LatestMovies.vue';
 import GenreMovies from '../views/GenreMovies.vue';
 import GenreOverview from '../views/GenreOverview.vue';
+import SearchMovies from '../views/SearchMovies.vue';
+import MyPage from '../views/MyPage.vue';
 
 
 const routes = [
@@ -19,10 +21,20 @@ const routes = [
   {
     path: '/genre',
     component: GenreOverview, // 기본 페이지
-    redirect: '/genre/action', // 기본 리다이렉트
+    redirect: '/genre/액션', // 기본 리다이렉트
     children: [
       { path: ':genreName', name: 'GenreMovies', component: GenreMovies }
     ]
+  },
+  {
+    path: '/search',
+    name: 'SearchMovies',
+    component: SearchMovies
+  },
+  {
+    path: '/mypage',
+    name: 'MyPage',
+    component: MyPage
   },
 ];
 
