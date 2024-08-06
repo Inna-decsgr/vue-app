@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ genreName }} 영화</h1>
+    <h3>{{ genreName }}</h3>
     <MoviesList :movies="movies" />
   </div>
 </template>
@@ -12,20 +12,19 @@ import { computed, ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const genreMap = {
-  28: 'action',
-  12: 'Adventure',
-  16: 'Animation',
-  35: 'Comedy',
-  80: 'Crime',
-  99: 'Documentary',
-  18: 'Drama',
-  10751: 'Family',
-  14: 'Fantasy',
-  36: 'History',
-  10402: 'Music',
-  9648: 'Mystery',
-  10749: 'Romance',
-  10752: 'War',
+  28: '액션',
+  12: '어드벤처',
+  16: '애니메이션',
+  35: '코미디',
+  80: '범죄',
+  99: '다큐멘터리',
+  18: '드라마',
+  10751: '가족',
+  14: '판타지',
+  36: '역사',
+  10402: '음악',
+  10749: '로맨스',
+  10752: '전쟁',
 };
 
 export default {
@@ -35,10 +34,9 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const genreName = computed(() => route.params.genreName);
-
     const genreId = ref(null);
     const movies = ref([]);
+    const genreName = computed(() => route.params.genreName);
 
     const updateGenreId = () => {
       const id = Object.keys(genreMap).find(key => genreMap[key].toLowerCase() === genreName.value.toLowerCase());
