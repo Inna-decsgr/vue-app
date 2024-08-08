@@ -5,8 +5,7 @@
         <div class="card h-100" @click="moveDetail(movie._id)">
           <img :src="movie.poster_url" :alt="movie.title" class="card-img-top" />
           <div class="card-body">
-            <h5 class="card-title fw-bold">{{ movie.title }}</h5>
-            <p class="card-text description">{{ movie.description }}</p>
+            <h5 class="fw-bold fs-4">{{ movie.title }}</h5>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><span class="fw-bold">감독: </span>{{ movie.director }}</li>
@@ -48,12 +47,10 @@ export default {
   object-fit: cover; 
 }
 
-.description {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 3em;
+.card-body {
+  padding: 15px;
+  flex: 0 0;
 }
+
+
 </style>
