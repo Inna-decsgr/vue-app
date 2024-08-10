@@ -5,6 +5,7 @@ import GenreMovies from '../views/GenreMovies.vue';
 import GenreOverview from '../views/GenreOverview.vue';
 import SearchMovies from '../views/SearchMovies.vue';
 import MyPage from '../views/MyPage.vue';
+import MovieDetail from '../views/MovieDetail.vue';
 
 
 const routes = [
@@ -35,6 +36,11 @@ const routes = [
     path: '/mypage',
     name: 'MyPage',
     component: MyPage
+  },
+  {
+    path: '/movies/:id',
+    name: 'MovieDetail',
+    component: MovieDetail
   },
 ];
 
