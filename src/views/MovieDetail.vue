@@ -10,9 +10,9 @@
       </ul>
       <p class="movie-desc">{{ movie.description }}</p>
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-danger" @click="likeMovie">찜❤</button>
-        <button type="button" class="btn btn-warning">즐겨찾기⭐</button>
-        <button type="button" class="btn btn-secondary">리뷰 작성✍</button>
+        <button type="button" class="btn btn-danger" @click="likeMovie">찜</button>
+        <button type="button" class="btn btn-warning" @click="Bookmarks">즐겨찾기</button>
+        <button type="button" class="btn btn-secondary">리뷰 작성</button>
       </div>
     </div>
     <img :src="movie.poster_url" :alt="movie.title" class="movie-poster" />
@@ -73,6 +73,21 @@ export default {
         alert("영화가 성공적으로 찜 되었습니다!");
       } catch (error) {
         console.error('영화 찜하기 중 오류 발생:', error);
+      }
+    },
+
+    async Bookmarks() {
+      try {
+        const response = await axios.post('/bookmarks', {
+          uid: this.userId,
+          movieId: this.movieId,
+          title: this.movie.title,
+          imageUrl: this.movie.poster_url
+        });
+        console.log(response.data.message);
+        alert("영화가 성공적으로 즐겨찾기 되었습니다!");
+      } catch (error) {
+        console.error('영화 즐겨찾기 중 오류 발생:', error);
       }
     }
   },
