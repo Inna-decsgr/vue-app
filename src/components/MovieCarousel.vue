@@ -1,0 +1,48 @@
+<template>
+  <Splide
+    v-if="movies.length"
+    :options="{
+      perPage: 6,
+      gap: '1rem',
+      breakpoints: {
+        800: { perPage: 2 },
+        600: { perPage: 1 },
+      },
+      drag: 'free',
+      pagination: false,
+      arrows: true,
+    }"
+    aria-label="Movie Carousel"
+  >
+    <SplideSlide v-for="movie in movies" :key="movie.movieId">
+      <img :src="movie.imageUrl" :alt="movie.title" class="movie-image" />
+    </SplideSlide>
+  </Splide>
+</template>
+
+<script>
+import { Splide, SplideSlide } from '@splidejs/vue-splide';
+import '@splidejs/splide/dist/css/splide.min.css';
+
+export default {
+  components: { Splide, SplideSlide },
+  props: {
+    movies: {
+      type: Array,
+      required: true,
+    },
+    perPage: {
+      type: Number,
+      default: 3,
+    },
+  },
+};
+</script>
+
+<style scoped>
+.movie-image {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
