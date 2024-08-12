@@ -15,7 +15,12 @@
     aria-label="Movie Carousel"
   >
     <SplideSlide v-for="movie in movies" :key="movie.movieId">
-      <img :src="movie.imageUrl" :alt="movie.title" class="movie-image" />
+      <img 
+        :src="movie.imageUrl" 
+        :alt="movie.title" 
+        class="movie-image"
+        @click="moveDetail(movie.movieId)"
+      />
     </SplideSlide>
   </Splide>
 </template>
@@ -36,6 +41,12 @@ export default {
       default: 3,
     },
   },
+  methods: {
+    moveDetail(movieId) {
+      this.$router.push(`/movies/${movieId}`);
+      console.log(this.movies)
+    }
+  }
 };
 </script>
 
