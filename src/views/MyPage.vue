@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <h2>내가 찜한 영화</h2>
+    <div class="mb-5">
+      <h4>내가 찜한 영화</h4>
       <div v-if="loadingLikedMovies">로딩 중...</div>
         <div v-else>
           <MovieCarousel 
@@ -12,13 +12,13 @@
       </div>
     </div>
     <div>
-      <h2>즐겨찾기한 영화</h2>
+      <h4>즐겨찾기한 영화</h4>
       <div v-if="loadingBookmarks">로딩 중...</div>
         <div v-else>
           <MovieCarousel 
-          v-if="bookmarkedMovies.length" 
-          :movies="bookmarkedMovies" 
-        />
+            v-if="bookmarkedMovies.length" 
+            :movies="bookmarkedMovies" 
+          />
         <p v-else>즐겨찾기한 영화가 없습니다.</p>
       </div>
     </div>
