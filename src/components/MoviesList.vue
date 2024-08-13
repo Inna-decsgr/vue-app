@@ -2,10 +2,10 @@
   <div class="container mt-5">
     <div class="row">
       <div v-for="movie in movies" :key="movie._id" class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-5">
-        <div class="card h-100" @click="moveDetail(movie._id)">
+        <div class="card h-100 movie-card" @click="moveDetail(movie._id)">
           <img :src="movie.poster_url" :alt="movie.title" class="card-img-top" />
           <div class="card-body">
-            <h5 class="fw-bold fs-4">{{ movie.title }}</h5>
+            <h3 class="fw-bold fs-4">{{ movie.title }}</h3>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><span class="fw-bold">감독: </span>{{ movie.director }}</li>
@@ -50,6 +50,10 @@ export default {
 .card-body {
   padding: 15px;
   flex: 0 0;
+}
+
+.movie-card:hover {
+  box-shadow: inset;
 }
 
 
