@@ -47,7 +47,8 @@
         <div v-if="myReview.length" class="myreview">
           <p v-for="(review, index) in myReview" :key="index">
             <span class="author">나: </span>
-            <span class="review">{{ review.comments }}</span>
+            <span class="review">{{ review.comments }}</span><br />
+            <span class="date">{{ formatDate(review.date) }}</span>
           </p>
         </div>
         <div v-else>
@@ -59,8 +60,9 @@
         <h5 class="fw-bold mb-4">다른 사용자들의 평</h5>
         <div v-if="otherReviews.length">
           <p v-for="(review, index) in otherReviews" :key="index">
-            <span class="author">{{ review.userName }}:</span><br/>
-            <span class="review">{{ review.comments }}</span>
+            <span class="author">{{ review.userName }}: </span>
+            <span class="review">{{ review.comments }}</span><br/>
+            <span class="date">{{ formatDate(review.date) }}</span>
           </p>
         </div>
         <div v-else>
@@ -76,6 +78,7 @@
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
+import { formatDate } from '@/utils/formatDate';
 
 export default {
   data() {
@@ -102,6 +105,9 @@ export default {
     }
   },
   methods: {
+    formatDate(dateString) {
+      return formatDate(dateString);
+    },
     async fetchMovie(id) {
       try {
         const response = await axios.get(`/movies/${id}`);
@@ -301,6 +307,12 @@ h5 {
 
 .review {
   color: #a6a8ac;
+
+}
+
+.date {
+  color: #a6a8ac;
+  font-size: 15px;
 }
 
 
