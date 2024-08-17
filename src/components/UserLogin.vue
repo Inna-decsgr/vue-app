@@ -26,6 +26,7 @@ export default {
 
     async handleLoginWithGoogle() {
       this.$store.commit('setLoading', true);  // Vuex에서 loading 상태를 true로 설정
+      console.log("사용자", this.user);
       try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = {
@@ -37,8 +38,10 @@ export default {
         // Vuex action을 직접 호출해서 로그인 처리 및 사용자 정보 저장
         await this.loginWithGoogle(user);
         this.$router.push('/');  // 로그인 후 홈으로 리디렉션
+        console.log('로그인 성공');
       } catch (error) {
         alert('로그인에 실패했습니다. 다시 시도해보세요.');
+        console.error('로그인에 실패했습니다:', error);  // 에러 메시지 출력
       } finally {
         this.$store.commit('setLoading', false);  // Vuex에서 loading 상태를 false로 설정
       }
@@ -58,7 +61,7 @@ export default {
     async checkAuthStatus() {
       // 로컬 저장소에서 토큰을 확인하고 서버에 인증 상태를 확인하는 요청을 보낸다.
       try {
-        const response = await this.$http.get('http://localhost:5000/api/protected', {
+        const response = await this.$http.get('/protected', {
           withCredentials: true
         });
 
@@ -78,20 +81,33 @@ export default {
     },
   },
   async mounted() {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');  // 직접 로드 시도
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');  // user 정보를 로드
 
-    if (token) {
-      this.$store.commit('setToken', token);
-    }
-    if (user) {
-      this.$store.commit('setUser', JSON.parse(user));  // JSON 파싱하여 상태 업데이트
-    }
+  if (token) {
+    this.$store.commit('setToken', token);
+  }
 
-    if (token) {
-      await this.checkAuthStatus();
+  if (user) {
+    try {
+      // user 값이 null 또는 undefined일 경우 JSON.parse를 호출하지 않음
+      if (user !== 'undefined' && user !== null) {
+        this.$store.commit('setUser', JSON.parse(user));
+      } else {
+        // 사용자 정보가 없거나 올바르지 않으면 로그아웃 처리
+        this.$store.commit('logout');
+      }
+    } catch (error) {
+      console.error('사용자 정보 로드 오류:', error);
+      // JSON 파싱 오류가 발생할 경우 상태 초기화 또는 처리
+      this.$store.commit('logout');
     }
-  },
+  }
+
+  if (token) {
+    await this.checkAuthStatus();
+  }
+}
 };
 </script>
 
