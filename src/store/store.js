@@ -38,25 +38,32 @@ export default new Vuex.Store({
 
   actions: {
     async loginWithGoogle({ commit }, user) {  // 매개변수로 받은 user 정보를 이용해서 백엔드 서버에 로그인 요청을 보냄
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL
-      });
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/login', {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL
+        });
 
-      // 로그인 요청 후 JWT 토큰 상태 저장
-      const token = response.data.token;  // 백엔드 서버에서 JWT 토큰을 응답받아 
-      commit('setToken', token);  // SetToken 뮤테이션을 호출해서 token 상태 저장
-      // 이후 API 요청 시 토큰을 포함하기 위해 axios 기본 헤더에 Authorization 설정
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        // 로그인 요청 후 JWT 토큰 상태 저장
+        const token  = response.data.token;  // 백엔드 서버에서 JWT 토큰을 응답받아 
+
+        commit('setToken', token);  // SetToken 뮤테이션을 호출해서 token 상태 저장
+        // 이후 API 요청 시 토큰을 포함하기 위해 axios 기본 헤더에 Authorization 설정
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       
-      // 사용자 정보를 저장하거나 업데이트
-      await axios.post('http://localhost:5000/api/users', user);
-      // setUser 뮤테이션 호출해서 Vuex 스토어에 사용자 정보 저장
-      commit('setUser', user);
-      console.log('로그인하고 사용자 정보 저장:', user);
+        // 사용자 정보를 저장하거나 업데이트
+        await axios.post('http://localhost:5000/api/users', user);
+        // setUser 뮤테이션 호출해서 Vuex 스토어에 사용자 정보 저장
+        commit('setUser', user);
+        
+        console.log('로그인하고 사용자 정보 저장:', user);
+      } catch (error) {
+        console.error('로그인 오류', error);
+        throw error;
+      }
     },
     async logout({ commit }) {
       await axios.post('http://localhost:5000/api/auth/logout');
