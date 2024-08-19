@@ -2,7 +2,7 @@
   <Splide
     v-if="movies.length"
     :options="{
-      perPage: 6,
+      perPage: 7,
       gap: '1rem',
       breakpoints: {
         800: { perPage: 2 },
@@ -53,6 +53,7 @@ export default {
 <style scoped>
 .movie-image {
   width: 100%;
+  height: 400px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
