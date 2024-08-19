@@ -16,7 +16,7 @@
   >
     <SplideSlide v-for="movie in movies" :key="movie.movieId">
       <img 
-        :src="movie.imageUrl" 
+        :src="movie.imageUrl || movie.poster_url" 
         :alt="movie.title" 
         class="movie-image"
         @click="moveDetail(movie.movieId)"
