@@ -132,7 +132,9 @@ export default {
           uid: this.userId,
           movieId: this.movieId,
           title: this.movie.title,
-          imageUrl: this.movie.poster_url
+          imageUrl: this.movie.poster_url,
+          director: this.movie.director,
+          cast: this.movie.cast,
         });
         console.log(response.data.message);
         alert(response.data.message);
@@ -148,7 +150,9 @@ export default {
           movieId: this.movieId,
           title: this.movie.title,
           imageUrl: this.movie.poster_url,
-          movieTitle: this.movie.title
+          movieTitle: this.movie.title,
+          director: this.movie.director,
+          cast: this.movie.cast,
         });
         console.log(response.data.message);
         alert(response.data.message);
