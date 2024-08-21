@@ -117,6 +117,7 @@ export default {
         if (this.movie && this.userId) {
           this.fetchReview(this.movie.title, this.userId)
         }
+        console.log(this.movie.genres);
       } catch (error) {
         console.error('영화 데이터를 가져오는 중 오류 발생:', error);
       }
@@ -135,6 +136,7 @@ export default {
           imageUrl: this.movie.poster_url,
           director: this.movie.director,
           cast: this.movie.cast,
+          genres: this.movie.genres
         });
         console.log(response.data.message);
         alert(response.data.message);
@@ -153,6 +155,7 @@ export default {
           movieTitle: this.movie.title,
           director: this.movie.director,
           cast: this.movie.cast,
+          genres: this.movie.genres
         });
         console.log(response.data.message);
         alert(response.data.message);
