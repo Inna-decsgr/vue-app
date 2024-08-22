@@ -16,8 +16,8 @@
   >
     <SplideSlide v-for="movie in movies" :key="movie.movieId">
       <img 
-        :src="movie.imageUrl || movie.poster_url" 
-        :alt="movie.title" 
+        :src="movie.imageUrl || movie.poster_url || movie._doc?.poster_url" 
+        :alt="movie.title || movie._doc.title" 
         class="movie-image"
         @click="moveDetail(movie.movieId)"
       />
@@ -28,7 +28,6 @@
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
-
 export default {
   components: { Splide, SplideSlide },
   props: {
@@ -37,8 +36,7 @@ export default {
       required: true,
     },
     perPage: {
-      type: Number,
-      default: 3,
+      type: Number
     },
   },
   methods: {
@@ -56,5 +54,6 @@ export default {
   height: 400px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 </style>
