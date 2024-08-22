@@ -8,7 +8,7 @@
         <p v-else>찜한 영화가 없습니다.</p>
       </div>
     </div>
-    <div>
+    <div class="mb-5">
       <h4>즐겨찾기한 영화</h4>
       <div v-if="loadingBookmarks">로딩 중...</div>
       <div v-else>
@@ -16,12 +16,20 @@
         <p v-else>즐겨찾기한 영화가 없습니다.</p>
       </div>
     </div>
-    <div>
+    <div class="mb-5">
       <h4>추천 영화</h4>
       <div v-if="loadingRecommendations">로딩 중...</div>
       <div v-else>
         <MovieCarousel v-if="recommendedMovies.length" :movies="recommendedMovies" />
         <p v-else>추천 영화가 없습니다.</p>
+      </div>
+    </div>
+    <div>
+      <h4>장르별 추천 영화</h4>
+      <div v-if="loadingRecommendGenres">로딩 중...</div>
+      <div v-else>
+        <MovieCarousel v-if="recommendedGenres.length" :movies="recommendedGenres" />
+        <p v-else>장르별 추천 영화가 없습니다.</p>
       </div>
     </div>
   </div>
@@ -40,9 +48,11 @@ export default {
       likedMovies: [],
       bookmarkedMovies: [],
       recommendedMovies: [],
+      recommendedGenres: [],
       loadingLikedMovies: true,
       loadingBookmarks: true,
       loadingRecommendations: true,
+      loadingRecommendGenres: true,
     };
   },
   computed: {
@@ -53,33 +63,44 @@ export default {
   },
   async created() {
     if (this.userId) {
-        try {
-            // 찜한 영화 목록 가져오기
-            const likedMoviesResponse = await axios.get(`/likes/${this.userId}`);
-            this.likedMovies = likedMoviesResponse.data;
+      try {
+        // 찜한 영화 목록 가져오기
+        const likedMoviesResponse = await axios.get(`/likes/${this.userId}`);
+        this.likedMovies = likedMoviesResponse.data;
 
-            // 즐겨찾기 목록 가져오기
-            const bookmarksResponse = await axios.get(`/bookmarks/${this.userId}`);
-            this.bookmarkedMovies = bookmarksResponse.data;
+        // 즐겨찾기 목록 가져오기
+        const bookmarksResponse = await axios.get(`/bookmarks/${this.userId}`);
+        this.bookmarkedMovies = bookmarksResponse.data;
 
-            // 추천 영화 가져오기
-            const recommendationsResponse = await axios.post('/recommendations', {
-                likedMovies: this.likedMovies,
-                bookmarkedMovies: this.bookmarkedMovies
-            });
-            this.recommendedMovies = removeDuplicates(recommendationsResponse.data, 'title');
-        } catch (error) {
-            console.error('데이터를 가져오는 중 오류 발생:', error);
-        } finally {
-            this.loadingLikedMovies = false;
-            this.loadingBookmarks = false;
-            this.loadingRecommendations = false;
-        }
-    } else {
-        console.error('사용자 ID가 없습니다.');
+        // 추천 영화 가져오기
+        const recommendationsResponse = await axios.post('/recommendations', {
+          likedMovies: this.likedMovies,
+          bookmarkedMovies: this.bookmarkedMovies
+        });
+        this.recommendedMovies = removeDuplicates(recommendationsResponse.data, 'title');
+
+        // 장르 추천 영화 가져오기
+        const recommendedGenresResponse = await axios.post(`/recommendGenres/${this.userId}`, {
+          likedMovies: this.likedMovies,
+          bookmarkedMovies: this.bookmarkedMovies
+        });
+        this.recommendedGenres = recommendedGenresResponse.data;  
+        console.log('장르별 추천 영화(유사도 포함)', recommendedGenresResponse.data);
+
+      } catch (error) {
+        console.error('데이터를 가져오는 중 오류 발생:', error);
+      } finally {
         this.loadingLikedMovies = false;
         this.loadingBookmarks = false;
         this.loadingRecommendations = false;
+        this.loadingRecommendGenres = false;
+      }
+    } else {
+      console.error('사용자 ID가 없습니다.');
+      this.loadingLikedMovies = false;
+      this.loadingBookmarks = false;
+      this.loadingRecommendations = false;
+      this.loadingRecommendGenres = false;
     }
 }
 
