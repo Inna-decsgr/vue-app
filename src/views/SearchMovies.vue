@@ -7,7 +7,7 @@
         <MoviesList :movies="results" />
       </div>
       <div v-else>
-        <p>검색 결과가 없습니다.</p>
+        <p>"{{ query }}"와 일치하는 영화가 없습니다.</p>
       </div>
     </div>
     <div v-else>
