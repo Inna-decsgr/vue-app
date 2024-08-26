@@ -1,36 +1,41 @@
 <template>
   <div>
-    <div class="mb-5">
-      <h4>내가 찜한 영화</h4>
-      <div v-if="loadingLikedMovies">로딩 중...</div>
-      <div v-else>
-        <MovieCarousel v-if="likedMovies.length" :movies="likedMovies" />
-        <p v-else>찜한 영화가 없습니다.</p>
+    <div v-if="user">
+      <div class="mb-5">
+        <h4>내가 찜한 영화</h4>
+        <div v-if="loadingLikedMovies">로딩 중...</div>
+        <div v-else>
+          <MovieCarousel v-if="likedMovies.length" :movies="likedMovies" />
+          <p v-else>찜한 영화가 없습니다.</p>
+        </div>
+      </div>
+      <div class="mb-5">
+        <h4>즐겨찾기한 영화</h4>
+        <div v-if="loadingBookmarks">로딩 중...</div>
+        <div v-else>
+          <MovieCarousel v-if="bookmarkedMovies.length" :movies="bookmarkedMovies" />
+          <p v-else>즐겨찾기한 영화가 없습니다.</p>
+        </div>
+      </div>
+      <div class="mb-5">
+        <h4>추천 영화</h4>
+        <div v-if="loadingRecommendations">로딩 중...</div>
+        <div v-else>
+          <MovieCarousel v-if="recommendedMovies.length" :movies="recommendedMovies" />
+          <p v-else>추천 영화가 없습니다.</p>
+        </div>
+      </div>
+      <div>
+        <h4>장르별 추천 영화</h4>
+        <div v-if="loadingRecommendGenres">로딩 중...</div>
+        <div v-else>
+          <MovieCarousel v-if="recommendedGenres.length" :movies="recommendedGenres" />
+          <p v-else>장르별 추천 영화가 없습니다.</p>
+        </div>
       </div>
     </div>
-    <div class="mb-5">
-      <h4>즐겨찾기한 영화</h4>
-      <div v-if="loadingBookmarks">로딩 중...</div>
-      <div v-else>
-        <MovieCarousel v-if="bookmarkedMovies.length" :movies="bookmarkedMovies" />
-        <p v-else>즐겨찾기한 영화가 없습니다.</p>
-      </div>
-    </div>
-    <div class="mb-5">
-      <h4>추천 영화</h4>
-      <div v-if="loadingRecommendations">로딩 중...</div>
-      <div v-else>
-        <MovieCarousel v-if="recommendedMovies.length" :movies="recommendedMovies" />
-        <p v-else>추천 영화가 없습니다.</p>
-      </div>
-    </div>
-    <div>
-      <h4>장르별 추천 영화</h4>
-      <div v-if="loadingRecommendGenres">로딩 중...</div>
-      <div v-else>
-        <MovieCarousel v-if="recommendedGenres.length" :movies="recommendedGenres" />
-        <p v-else>장르별 추천 영화가 없습니다.</p>
-      </div>
+    <div v-else>
+      <p>로그인 후 이용해주세요.</p>
     </div>
   </div>
 </template>
@@ -77,7 +82,9 @@ export default {
           likedMovies: this.likedMovies,
           bookmarkedMovies: this.bookmarkedMovies
         });
-        this.recommendedMovies = removeDuplicates(recommendationsResponse.data, 'title');
+        console.log('추천 영화', recommendationsResponse.data);
+        this.recommendedMovies = removeDuplicates(recommendationsResponse.data, 'movieId');
+        console.log('중복 제거', this.recommendedMovies);
 
         // 장르 추천 영화 가져오기
         const recommendedGenresResponse = await axios.post(`/recommendGenres/${this.userId}`, {
@@ -85,7 +92,6 @@ export default {
           bookmarkedMovies: this.bookmarkedMovies
         });
         this.recommendedGenres = recommendedGenresResponse.data;  
-        console.log('장르별 추천 영화(유사도 포함)', recommendedGenresResponse.data);
 
       } catch (error) {
         console.error('데이터를 가져오는 중 오류 발생:', error);
@@ -96,11 +102,8 @@ export default {
         this.loadingRecommendGenres = false;
       }
     } else {
-      console.error('사용자 ID가 없습니다.');
-      this.loadingLikedMovies = false;
-      this.loadingBookmarks = false;
-      this.loadingRecommendations = false;
-      this.loadingRecommendGenres = false;
+      alert('로그인 후 이용해주세요.');  // 사용자에게 경고 표시
+      this.$router.push('/');
     }
 }
 
