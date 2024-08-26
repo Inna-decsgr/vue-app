@@ -38,7 +38,6 @@ export default {
 <style>
 .container {
   max-width: 100%;
-  cursor:pointer
 }
 
 .card-img-top {
@@ -50,6 +49,10 @@ export default {
 .card-body {
   padding: 15px;
   flex: 0 0;
+}
+
+.movie-card {
+  cursor: pointer;
 }
 
 .movie-card:hover {
