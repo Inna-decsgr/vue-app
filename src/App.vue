@@ -9,7 +9,7 @@
           <router-link to="/search" class="nav-link" active-class="active-link">검색</router-link>
         </div>
         <div class="fs-5 d-flex align-items-center content-router">
-          <router-link v-if="token" to="/mypage" class="nav-link" active-class="active-link">마이페이지</router-link>
+          <router-link v-if="accessToken" to="/mypage" class="nav-link" active-class="active-link">+ 관심 컨텐츠</router-link>
           <UserLogin />
         </div>
       </nav>
@@ -26,7 +26,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters(['token']), 
+    ...mapGetters(['accessToken']), 
   },
   components: {
     UserLogin
@@ -35,8 +35,6 @@ export default {
 </script>
 
 <style>
-@import '~bootstrap/dist/css/bootstrap.css';
-
 #id {
   color: white;
 }
@@ -46,7 +44,7 @@ export default {
   flex-direction: column;
   min-height: 100vh; /* 최소 높이를 화면 높이로 설정 */ 
   padding: 50px 200px; 
-  background-color: rgb(26, 24, 24); 
+  background-color: rgb(0, 0, 0); 
   color: white; 
 }
 
