@@ -39,7 +39,6 @@ export default {
         const response = await this.$http.get(`/movies/latest?page=${page}&limit=${this.limit}`);
         let movies = response.data;
 
-        // 중복 제거
         movies = removeDuplicates(movies, 'title');
 
         // 페이지네이션 로직

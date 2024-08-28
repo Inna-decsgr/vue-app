@@ -1,4 +1,4 @@
-// Firebase SDK 모듈을 임포트합니다
+// Firebase SDK 모듈 임포트
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
@@ -15,7 +15,7 @@ const firebaseConfig = {
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
 
-// Firebase 인증 모듈을 내보냅니다.
+// Firebase 인증 모듈을 내보내기
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 

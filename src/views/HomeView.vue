@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      popularMovies: [], // 빈 배열로 초기화
+      popularMovies: [], 
       currentPage: 1,
       totalPages: 1,
       totalMovies: 0,
@@ -39,9 +39,7 @@ export default {
         const response = await this.$http.get(`/movies/popular?page=${page}&limit=${this.limit}`);
         let movies = response.data;
 
-        // 중복 제거
         movies = removeDuplicates(movies, 'title');
-
 
         // 페이지네이션 로직
         const startIndex = (page - 1) * this.limit;

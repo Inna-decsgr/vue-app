@@ -173,11 +173,11 @@ export default {
           movieTitle: this.movie.title,
           userId: this.userId,
           userName: this.user.displayName,
-          comments: this.reviewContent  // 필드 이름을 서버와 일치시킵니다.
+          comments: this.reviewContent  
         });
         alert(response.data.message);
-        this.isFormVisible = false;  // 리뷰 작성 후 폼 닫기
-        this.reviewContent = ''; // 리뷰 내용 초기화
+        this.isFormVisible = false; 
+        this.reviewContent = ''; 
       } catch (error) {
         console.error('리뷰 제출 중 오류 발생:', error);
       }

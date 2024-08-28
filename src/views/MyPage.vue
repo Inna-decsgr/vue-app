@@ -100,7 +100,7 @@ export default {
         this.loadingRecommendGenres = false;
       }
     } else {
-      alert('로그인 후 이용해주세요.');  // 사용자에게 경고 표시
+      alert('로그인 후 이용해주세요.');  
       this.$router.push('/');
     }
 }

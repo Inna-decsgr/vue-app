@@ -5,41 +5,41 @@ import createPersistedState from 'vuex-persistedstate';
 export default new Vuex.Store({
   state: {
     accessToken: null,
-    refreshToken: null,  // 새로운 상태 추가: refresh token
+    refreshToken: null, 
     user: null,
     loading: false,
   },
 
   getters: {
-    accessToken: state => state.accessToken,  // accessToken state.accessToken으로 반환
-    refreshToken: state => state.refreshToken, // 새로 추가된 getter
-    user: state => state.user,  // user에 state.user를 반환
+    accessToken: state => state.accessToken, 
+    refreshToken: state => state.refreshToken, 
+    user: state => state.user,  
     isLoggedIn: state => !!state.accessToken,  // 사용자가 로그인했는지 여부 판단, 토큰이 존재하면 true, 그렇지 않으면 false
-    loading: state => state.loading  // 로딩 상태 반환
+    loading: state => state.loading  
   },
 
   mutations: {
     setToken(state, accessToken) {  // 매개변수로 받은 token을 state.token와 localStorage에 저장
       state.accessToken = accessToken;
-      localStorage.setItem('accessToken', accessToken); // 로컬 스토리지에 저장
+      localStorage.setItem('accessToken', accessToken); 
     },
-    setRefreshToken(state, refreshToken) {  // 새로 추가된 mutation
+    setRefreshToken(state, refreshToken) {  
       state.refreshToken = refreshToken;
-      localStorage.setItem('refreshToken', refreshToken); // 로컬 스토리지에 저장
+      localStorage.setItem('refreshToken', refreshToken); 
     },
-    setUser(state, user) {  // 매개변수로 받은 user 정보를 state.user와 localStorage에 저장
+    setUser(state, user) {  
       state.user = user;
-      localStorage.setItem('user', JSON.stringify(user)); // 로컬 스토리지에 저장 (객체를 문자열로 변환)
+      localStorage.setItem('user', JSON.stringify(user)); 
     },
     logout(state) {
-      state.accessToken = null;   // state.token과 state.user를 null로 설정해서 상태 초기화
-      state.refreshToken = null;  // 로그아웃 시 refresh token도 초기화
+      state.accessToken = null;   
+      state.refreshToken = null;  
       state.user = null;
-      localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 제거
-      localStorage.removeItem('refreshToken'); // 로컬 스토리지에서 리프레시 토큰 제거
-      localStorage.removeItem('user'); // 로컬 스토리지에서 사용자 정보 제거
+      localStorage.removeItem('accessToken'); 
+      localStorage.removeItem('refreshToken'); 
+      localStorage.removeItem('user'); 
     },
-    setLoading(state, loading) {   // 로딩 상태를 설정하는 뮤테이션
+    setLoading(state, loading) {   
       state.loading = loading;
     }
   },
@@ -103,6 +103,6 @@ export default new Vuex.Store({
     paths: ['refreshToken', 'user'], // user와 token을 localStorage에서 복원, 상태를 저장할 경로 지정(기본 설정은 모든 상태를 저장)
     key: 'vuex',
   })]
-  // createPersistedState() vuex-persistedstate의 기본 설정으로 상태를 자동으로 localStorage에 저장하고 복원한다.
+  // createPersistedState() vuex-persistedstate의 기본 설정으로 상태를 자동으로 localStorage에 저장하고 복원
   // Vuex 스토어의 플로그인 배열에 createPersistedState를 추가해서 상태를 유지하도록 설정
 });

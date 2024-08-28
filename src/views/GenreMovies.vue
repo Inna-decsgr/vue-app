@@ -44,7 +44,7 @@ export default {
   setup() {
     const route = useRoute();
     const genreId = ref(null);
-    const movies = ref([]);  // 영화 목록을 저장
+    const movies = ref([]);  
     const genreName = computed(() => route.params.genreName);
     const currentPage = ref(1);
     const totalPages = ref(1);

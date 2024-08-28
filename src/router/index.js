@@ -21,8 +21,8 @@ const routes = [
   },
   {
     path: '/genre',
-    component: GenreOverview, // 기본 페이지
-    redirect: '/genre/액션', // 기본 리다이렉트
+    component: GenreOverview, 
+    redirect: '/genre/액션', 
     children: [
       { path: ':genreName', name: 'GenreMovies', component: GenreMovies }
     ]

@@ -19,13 +19,13 @@ import { auth, googleProvider, signInWithPopup } from '../api/firebase.js';
 
 export default {
   computed: {
-    ...mapGetters(['user', 'isLoggedIn', 'loading']),  // mapGetters 사용해서 user, isLoggedIn, loading 가져오기
+    ...mapGetters(['user', 'isLoggedIn', 'loading']),   
   },
   methods: {
-    ...mapActions(['loginWithGoogle', 'logout', 'setUser', 'refreshToken']),  // mapActions를 사용해서 loginWithGoogle과 logout 액션을 가져오기. this.loginWithGoole 또는 this.logout으로 호출 가능. 컴포넌트의 메서드에서 액션을 직접 호출할 수 있도록 해준다.
+    ...mapActions(['loginWithGoogle', 'logout', 'setUser', 'refreshToken']),
 
     async handleLoginWithGoogle() {
-      this.$store.commit('setLoading', true);  // Vuex에서 loading 상태를 true로 설정
+      this.$store.commit('setLoading', true); 
       try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = {
@@ -39,27 +39,26 @@ export default {
 
         // 서버에 인증 상태 확인 요청
         await this.checkAuthStatus();
-        this.$router.push('/');  // 로그인 후 홈으로 리디렉션
+        this.$router.push('/');  
       } catch (error) {
         alert('로그인에 실패했습니다. 다시 시도해보세요.');
         console.error('로그인 오류', error);
       } finally {
-        this.$store.commit('setLoading', false);  // Vuex에서 loading 상태를 false로 설정
+        this.$store.commit('setLoading', false);  
       }
     },
 
     async handleLogout() {
       try {
-        // Vuex action을 호출해서 로그아웃 처리
         await this.logout();
-        this.$router.push('/');   // 로그아웃 후 홈으로 리디렉션
+        this.$router.push('/');   
       } catch (error) {
         console.error('로그아웃 오류', error);
       }
     },
 
     async checkAuthStatus() {
-      // 로컬 저장소에서 토큰을 확인하고 서버에 인증 상태를 확인하는 요청을 보낸다.
+      // 로컬 저장소에서 토큰을 확인하고 서버에 인증 상태를 확인하는 요청을 보내기
       try {
         const response = await this.$http.get('http://localhost:5000/api/protected', {
           withCredentials: true, // 쿠키도 함께 보내는 설정
@@ -96,10 +95,10 @@ export default {
   async mounted() {
     try {
       const token = localStorage.getItem('accessToken');
-      const user = localStorage.getItem('user');  // 직접 로드 시도
+      const user = localStorage.getItem('user');  
 
       if (user) {
-        this.$store.commit('setUser', JSON.parse(user));  // JSON 파싱하여 상태 업데이트
+        this.$store.commit('setUser', JSON.parse(user));  
       }
 
       if (token) {
@@ -127,7 +126,6 @@ export default {
 
 
 <style>
-/* 미디어 쿼리를 사용하여 화면 크기에 따라 패딩 조정 */
 @media (max-width: 767px) {
   .content-user {
     margin-top: 15px;

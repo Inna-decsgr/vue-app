@@ -44,14 +44,13 @@ export default {
             const response = await axios.get(`movies/search?q=${encodedQuery}`);
             const movies = response.data.movies || [];
 
-              // 중복 제거
             this.results = this.removeDuplicates(movies);
           } catch (error) {
             console.error('검색 중 오류 발생:', error);
-            this.results = [];  // 오류 발생 시 빈 배열로 초기화
+            this.results = [];  
           }
         } else {
-        this.results = [];  // 빈 문자열일 때 빈 배열로 초기화
+        this.results = [];  
       }
     },
 
