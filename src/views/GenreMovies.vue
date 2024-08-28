@@ -54,7 +54,6 @@ export default {
     const updateGenreId = () => {
       const id = Object.keys(genreMap).find(key => genreMap[key].toLowerCase() === genreName.value.toLowerCase());
       genreId.value = id ? parseInt(id) : null;
-      console.log('Updated genreId:', genreId.value); // Log for debugging
     };
 
     const fetchMovies = async (page = 1) => {
@@ -62,7 +61,6 @@ export default {
         try {
           const response = await axios.get(`/movies/genre/${genreId.value}`);
           const allMovies = removeDuplicates(response.data, 'title');
-          console.log('Movies after removing duplicates:', allMovies);
 
           // 페이지네이션 로직
           const startIndex = (page - 1) * limit.value;
@@ -89,8 +87,7 @@ export default {
       fetchMovies(page);
     };
 
-    watch(genreName, (newValue) => {
-      console.log('Genre name changed:', newValue); // Log for debugging
+    watch(genreName, () => {
       updateGenreId();
       fetchMovies();
     }, { immediate: true });

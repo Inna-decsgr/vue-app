@@ -82,9 +82,7 @@ export default {
           likedMovies: this.likedMovies,
           bookmarkedMovies: this.bookmarkedMovies
         });
-        console.log('추천 영화', recommendationsResponse.data);
         this.recommendedMovies = removeDuplicates(recommendationsResponse.data, 'movieId');
-        console.log('중복 제거', this.recommendedMovies);
 
         // 장르 추천 영화 가져오기
         const recommendedGenresResponse = await axios.post(`/recommendGenres/${this.userId}`, {

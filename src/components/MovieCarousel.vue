@@ -42,7 +42,6 @@ export default {
   methods: {
     moveDetail(movieId) {
       this.$router.push(`/movies/${movieId}`);
-      console.log(this.movies)
     }
   }
 };

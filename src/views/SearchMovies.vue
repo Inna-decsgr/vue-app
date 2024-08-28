@@ -40,14 +40,12 @@ export default {
         
         if (query) {
           try {
-            console.log('Searching for', this.query);
             const encodedQuery = encodeURIComponent(query);
             const response = await axios.get(`movies/search?q=${encodedQuery}`);
             const movies = response.data.movies || [];
 
               // 중복 제거
             this.results = this.removeDuplicates(movies);
-            console.log('Search results:', this.results);
           } catch (error) {
             console.error('검색 중 오류 발생:', error);
             this.results = [];  // 오류 발생 시 빈 배열로 초기화
@@ -62,7 +60,6 @@ export default {
       const movieTitles = new Set();
       return movies.filter(movie => {
         const isDuplicate = movieTitles.has(movie.title);
-        console.log(isDuplicate);
         movieTitles.add(movie.title);
         return !isDuplicate;
       });

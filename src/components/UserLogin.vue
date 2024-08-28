@@ -53,7 +53,6 @@ export default {
         // Vuex action을 호출해서 로그아웃 처리
         await this.logout();
         this.$router.push('/');   // 로그아웃 후 홈으로 리디렉션
-        console.log('로그아웃 성공');
       } catch (error) {
         console.error('로그아웃 오류', error);
       }
@@ -68,12 +67,11 @@ export default {
 
         if (response.status === 200) {
           // 인증 성공하면 Vuex 상태 업데이트
-          console.log('인증 성공! 상태 업데이트 중...');
           this.$store.commit('setToken', localStorage.getItem('accessToken')); // accessToken으로 변경
           this.$store.commit('setRefreshToken', localStorage.getItem('refreshToken')); // refreshToken도 설정
           this.$store.commit('setUser', JSON.parse(localStorage.getItem('user'))); // 사용자 정보를 JSON으로 파싱하여 저장
-          console.log('accessToken, refreshToken, user', localStorage.getItem('accessToken'), localStorage.getItem('refreshToken'), JSON.parse(localStorage.getItem('user')))
         } 
+
       } catch (error) {
         console.error('인증 요청 또는 토큰 갱신 에러', error);
 
@@ -110,9 +108,6 @@ export default {
 
         if (tokenExpired) {
           try {
-            console.log(token);
-            // 토큰이 만료된 경우, 리프레시 토큰을 사용해서 새로운 액세스 토큰을 가져옴
-            console.log('토큰 만료돼서 리프레시 토큰으로 새로운 액세스 토큰 가져오기');
             await this.$store.dispatch('refreshToken');
           } catch (refreshError) {
             console.error('토큰 갱신 에러:', refreshError);

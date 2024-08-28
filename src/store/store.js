@@ -55,7 +55,6 @@ export default new Vuex.Store({
         });
 
         const { accessToken, refreshToken } = response.data;  
-        console.log(response.data);
 
         commit('setToken', accessToken);  
         commit('setRefreshToken', refreshToken);  
@@ -74,22 +73,17 @@ export default new Vuex.Store({
     },
     async refreshToken({ commit, state }) {
       try {
-        console.log('현재 refreshToken:', state.refreshToken);
-
         const response = await axios.post('http://localhost:5000/api/auth/refresh', {
           refreshToken: state.refreshToken
         });
-        console.log('서버 응답:', response.data); // 서버에서 받은 응답 로그
 
         if (response.status === 200) {
           const { accessToken, refreshToken } = response.data; // 서버에서 새 access token과 refresh token을 받아옴
-          console.log(accessToken, refreshToken);
 
           commit('setToken', accessToken);
           commit('setRefreshToken', refreshToken);
           
           axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-          console.log('accessToken, refreshToken 업데이트 완료');
         } else {
           console.log('새로운 accessToken 발급 실패')
         }
@@ -102,7 +96,6 @@ export default new Vuex.Store({
       await axios.post('http://localhost:5000/api/auth/logout');
       commit('logout');
       delete axios.defaults.headers.common['Authorization'];
-      console.log('사용자 로그아웃');
     }
   },
 

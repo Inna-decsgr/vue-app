@@ -41,7 +41,6 @@ export default {
 
         // 중복 제거
         movies = removeDuplicates(movies, 'title');
-        console.log('Movies after removing duplicates:', movies);
 
         // 페이지네이션 로직
         const startIndex = (page - 1) * this.limit;

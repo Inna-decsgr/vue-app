@@ -112,12 +112,10 @@ export default {
       try {
         const response = await axios.get(`/movies/${id}`);
         this.movie = response.data;
-        console.log(response.data);
 
         if (this.movie && this.userId) {
           this.fetchReview(this.movie.title, this.userId)
         }
-        console.log(this.movie.genres);
       } catch (error) {
         console.error('영화 데이터를 가져오는 중 오류 발생:', error);
       }
@@ -138,7 +136,6 @@ export default {
           cast: this.movie.cast,
           genres: this.movie.genres
         });
-        console.log(response.data.message);
         alert(response.data.message);
       } catch (error) {
         alert(error.response.data.message || '서버에서 오류가 발생했습니다.');
@@ -157,7 +154,6 @@ export default {
           cast: this.movie.cast,
           genres: this.movie.genres
         });
-        console.log(response.data.message);
         alert(response.data.message);
       } catch (error) {
         console.error('영화 즐겨찾기 중 오류 발생:', error);
@@ -179,7 +175,6 @@ export default {
           userName: this.user.displayName,
           comments: this.reviewContent  // 필드 이름을 서버와 일치시킵니다.
         });
-        console.log(response.data.message);
         alert(response.data.message);
         this.isFormVisible = false;  // 리뷰 작성 후 폼 닫기
         this.reviewContent = ''; // 리뷰 내용 초기화
