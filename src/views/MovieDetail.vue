@@ -47,7 +47,8 @@
         <div v-if="myReview.length" class="myreview">
           <p v-for="(review, index) in myReview" :key="index">
             <span class="author">나: </span>
-            <span class="review">{{ review.comments }}</span><br />
+            <span class="review">{{ review.comments }}</span>
+            <button @click="removeReview(movie.title, userId, review.comments)" class="btn btn-outline-warning remove">삭제</button><br/>
             <span class="date">{{ formatDate(review.date) }}</span>
           </p>
         </div>
@@ -177,7 +178,11 @@ export default {
         });
         alert(response.data.message);
         this.isFormVisible = false; 
-        this.reviewContent = ''; 
+        this.reviewContent = '';
+
+        // 리뷰 목록에 반영
+        console.log(response.data.message);
+        this.fetchReview(this.movie.title, this.userId);
       } catch (error) {
         console.error('리뷰 제출 중 오류 발생:', error);
       }
@@ -191,6 +196,21 @@ export default {
       } catch (error) {
         console.error('리뷰 불러오기 중 오류 발생', error);
       }
+    },
+    async removeReview(movieTitle, userId, comments) {
+      try {
+        const response = await axios.delete('/reviews/delete', {
+          data: {
+            movieTitle,
+            userId,
+            comments
+          }
+        });
+        console.log(response.data.message);
+        this.fetchReview(this.movie.title, this.userId);
+      } catch (error) {
+    console.error('리뷰 삭제 중 오류 발생:', error.response?.data?.message || error.message);
+  }
     }
   },
   created() {
@@ -317,6 +337,9 @@ h5 {
   font-size: 15px;
 }
 
+.remove {
+  margin-left: 17px;
+}
 
 
 @media (min-width: 768px) {
