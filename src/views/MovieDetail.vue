@@ -10,10 +10,11 @@
           <li><strong>평점:</strong> {{ movie.rating }}</li>
         </ul>
         <p class="movie-desc">{{ movie.description }}</p>
+
         <div class="btn-small-group mt-4" role="group" aria-label="Large button group">
           <button type="button" class="btn btn-outline-warning" @click="likeMovie">+ 보고싶어요</button>
           <button type="button" class="btn btn-outline-warning" @click="Bookmarks">즐겨찾기</button>
-          <button type="button" class="btn btn-outline-warning" @click="toggleForm">리뷰 작성</button>
+          <button v-if="!myReview.length" type="button" class="btn btn-outline-warning" @click="toggleForm">리뷰 작성</button>
         </div>
       </div>
       <img :src="movie.poster_url" :alt="movie.title" class="movie-poster" />
@@ -21,6 +22,7 @@
     <div v-else>
       <p>영화 정보를 로딩 중입니다...</p>
     </div>
+
     <div v-if="isFormVisible" class="form-overlay">
       <div class="form-container">
         <form @submit.prevent="submitReview">
@@ -36,11 +38,12 @@
           ></textarea>
           <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
             <button type="button" class="btn btn-outline-warning" @click="toggleForm">취소</button>
-            <button type="submit" class="btn btn-outline-warning">제출</button>
+            <button type="submit" class="btn btn-outline-warning">{{ isEditMode ? '수정' : '제출' }}</button>
           </div>
         </form>
       </div>
     </div>
+
     <div class="users-comment">
       <div class="myreview">
         <h5 class="fw-bold mb-4">내가 작성한 관람평</h5>
@@ -48,6 +51,7 @@
           <p v-for="(review, index) in myReview" :key="index">
             <span class="author">나: </span>
             <span class="review">{{ review.comments }}</span>
+            <button @click="editReview(review)" class="btn btn-outline-warning edit">수정</button>
             <button @click="removeReview(movie.title, userId, review.comments)" class="btn btn-outline-warning remove">삭제</button><br/>
             <span class="date">{{ formatDate(review.date) }}</span>
           </p>
@@ -76,6 +80,8 @@
 
 
 
+
+
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
@@ -89,6 +95,8 @@ export default {
       reviewContent: '',
       myReview: [],
       otherReviews: [],
+      isEditMode: false,
+      editingReview: null,
     };
   },
   computed: {
@@ -162,31 +170,35 @@ export default {
     },
     async toggleForm() {
       this.isFormVisible = !this.isFormVisible;
+      if (!this.isFormVisible) {
+        this.resetForm();
+      }
     },
     async submitReview() {
-      if (!this.reviewContent.trim()) {
-        alert('리뷰 내용을 입력해 주세요.');
-        return;
-      }
+  if (!this.reviewContent.trim()) {
+    alert('리뷰 내용을 입력해 주세요.');
+    return;
+  }
 
-      try {
-        const response = await axios.post('/reviews/add', {
-          movieTitle: this.movie.title,
-          userId: this.userId,
-          userName: this.user.displayName,
-          comments: this.reviewContent  
-        });
-        alert(response.data.message);
-        this.isFormVisible = false; 
-        this.reviewContent = '';
+  try {
+    const endpoint = this.isEditMode ? '/reviews/update' : '/reviews/add';
+    const response = await axios.post(endpoint, {
+      movieTitle: this.movie.title,
+      userId: this.userId,
+      userName: this.user.displayName,
+      comments: this.reviewContent,
+      reviewId: this.editingReview ? this.editingReview._id : null, 
+    });
 
-        // 리뷰 목록에 반영
-        console.log(response.data.message);
-        this.fetchReview(this.movie.title, this.userId);
-      } catch (error) {
-        console.error('리뷰 제출 중 오류 발생:', error);
-      }
-    },
+    alert(response.data.message);
+    this.isFormVisible = false;
+    this.resetForm();
+    this.fetchReview(this.movie.title, this.userId);
+  } catch (error) {
+    console.error('리뷰 제출 중 오류 발생:', error);
+  }
+},
+
     async fetchReview(title, userId) {
       try {
         const encodedTitle = encodeURIComponent(title);
@@ -209,8 +221,19 @@ export default {
         console.log(response.data.message);
         this.fetchReview(this.movie.title, this.userId);
       } catch (error) {
-    console.error('리뷰 삭제 중 오류 발생:', error.response?.data?.message || error.message);
-  }
+        console.error('리뷰 삭제 중 오류 발생:', error.response?.data?.message || error.message);
+      }
+    },
+    editReview(review) {
+      this.isEditMode = true;
+      this.editingReview = review;
+      this.reviewContent = review.comments;
+      this.toggleForm();
+    },
+    resetForm() {
+      this.isEditMode = false;
+      this.editingReview = null;
+      this.reviewContent = '';
     }
   },
   created() {
@@ -229,7 +252,7 @@ export default {
 
 .movie-container {
   display: flex;
-  flex-direction: row; /* 가로 정렬 */
+  flex-direction: row; 
   justify-content: center;
   align-items: flex-start;
   width: 60%;
@@ -271,7 +294,7 @@ export default {
 }
 
 .form-overlay {
-  position: fixed; /* 화면 전체에 오버레이 */
+  position: fixed; 
   top: 0;
   left: 0;
   width: 100%;
@@ -279,15 +302,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  background: rgba(0, 0, 0, 0.5); 
 }
 
 .form-container {
-  background: white; /* 폼 배경색 */
+  background: white;
   padding: 20px;
-  border-radius: 8px; /* 둥근 모서리 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
-  max-width: 600px; /* 최대 너비 */
+  border-radius: 8px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+  max-width: 600px; 
   width: 100%;
 }
 
@@ -302,10 +325,9 @@ export default {
 }
 
 textarea {
-  border: 1px solid #ced4da; /* 기본 테두리 색상 */
-  background-color: #ffffff; /* 기본 배경 색상 */
-  color: #495057; /* 기본 텍스트 색상 */
-  /* 추가적인 기본 스타일 초기화 */
+  border: 1px solid #ced4da; 
+  background-color: #ffffff; 
+  color: #495057; 
 }
 
 .users-comment {
@@ -337,15 +359,19 @@ h5 {
   font-size: 15px;
 }
 
+.edit {
+  margin-left: 12px;
+}
+
 .remove {
-  margin-left: 17px;
+  margin-left: 10px;
 }
 
 
 @media (min-width: 768px) {
   .movie-container {
-    flex-direction: row; /* 이미 가로 정렬 */
-    align-items: stretch; /* 세로 정렬을 최상단으로 조정 */
+    flex-direction: row; 
+    align-items: stretch; 
   }
 
   .movie-desc {
