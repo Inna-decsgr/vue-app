@@ -175,29 +175,29 @@ export default {
       }
     },
     async submitReview() {
-  if (!this.reviewContent.trim()) {
-    alert('리뷰 내용을 입력해 주세요.');
-    return;
-  }
+      if (!this.reviewContent.trim()) {
+        alert('리뷰 내용을 입력해 주세요.');
+        return;
+      }
 
-  try {
-    const endpoint = this.isEditMode ? '/reviews/update' : '/reviews/add';
-    const response = await axios.post(endpoint, {
-      movieTitle: this.movie.title,
-      userId: this.userId,
-      userName: this.user.displayName,
-      comments: this.reviewContent,
-      reviewId: this.editingReview ? this.editingReview._id : null, 
-    });
+      try {
+        const endpoint = this.isEditMode ? '/reviews/update' : '/reviews/add';
+        const response = await axios.post(endpoint, {
+          movieTitle: this.movie.title,
+          userId: this.userId,
+          userName: this.user.displayName,
+          comments: this.reviewContent,
+          reviewId: this.editingReview ? this.editingReview._id : null, 
+        });
 
-    alert(response.data.message);
-    this.isFormVisible = false;
-    this.resetForm();
-    this.fetchReview(this.movie.title, this.userId);
-  } catch (error) {
-    console.error('리뷰 제출 중 오류 발생:', error);
-  }
-},
+        alert(response.data.message);
+        this.isFormVisible = false;
+        this.resetForm();
+        this.fetchReview(this.movie.title, this.userId);
+      } catch (error) {
+        console.error('리뷰 제출 중 오류 발생:', error);
+      }
+    },
 
     async fetchReview(title, userId) {
       try {
